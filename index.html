@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>用户反馈页面</title>
+    <title>轮播服务</title>
     <link rel="stylesheet" href="https://res.wx.qq.com/t/wx_fed/weui-source/res/2.5.16/weui.min.css">
     <script type="text/javascript" src="https://res.wx.qq.com/t/wx_fed/weui.js/res/1.2.21/weui.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -126,8 +126,8 @@
         <div id="upload">
             <!-- 表单区域 -->
             <div class="page__hd">
-                <h1 class="page__title">轮播编辑</h1>
-                <p class="page__desc">展示的照片或视频链接请从公开频道中复制<br>展示媒体禁止露点或过于裸露，违者下架且不退款。</p>
+                <h1 class="page__title">轮播资料</h1>
+                <p class="page__desc">展示媒体（图片/视频）请从不受内容保护限制的公开频道/群组中获取，禁止使用露点或过于裸露图片视频，违者直接关闭服务且不退还费用。</p>
             </div>
             <div class="weui-cells weui-cells_form">
                 <div class="weui-cell">
@@ -135,7 +135,7 @@
                         <label class="weui-label">联系方式</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input id="username" class="weui-input" type="text" placeholder="填写你的电报用户名不需要带@">
+                        <input id="username" class="weui-input" type="text" placeholder="电报用户名（无需带@）">
                     </div>
                 </div>
                 
@@ -144,7 +144,7 @@
                         <label class="weui-label">频道链接</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input id="channel" class="weui-input" type="text" placeholder="https://t.me/xxxxxxxx">
+                        <input id="channel" class="weui-input" type="text" placeholder="你的频道链接">
                     </div>
                 </div>
                 
@@ -153,7 +153,7 @@
                         <label class="weui-label">展示媒体</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input id="media" class="weui-input" type="text" placeholder="展示的图片/视频链接">
+                        <input id="media" class="weui-input" type="text" placeholder="展示图片/视频的链接">
                     </div>
                 </div>
 
@@ -210,7 +210,8 @@
             currentCount.textContent = caption.value.length;
         });
         
-        app.MainButton.setText("提交资料").onClick(() => {
+        app.MainButton.setText("保存轮播资料").onClick(() => {
+            let url = media.value.replace(/\?single$/, '');
             if(!isValidTelegramUsername(username.value)){
                 return app.showAlert("联系方式的电报用户名格式错误！");
             }
@@ -219,18 +220,18 @@
                 return app.showAlert("频道链接错误！");
             }
             
-            if(!isValidTelegramMessageLink(media.value)){
+            if(!isValidTelegramMessageLink(url)){
                 return app.showAlert("媒体链接错误，请从公开频道中复制图片或视频的消息链接。");
             }
             
-            if((caption.value('\n')).length > 3){
+            if((caption.value.split('\n')).length > 3){
                 return app.showAlert("文案行数不能大于3行");
             }
 
             app.sendData(JSON.stringify({
                 username: username.value,
                 channel: channel.value.replace('https://t.me/', ''),
-                url: media.value.replace('https://t.me/', ''),
+                url: url.replace('https://t.me/', ''),
                 caption: caption.value
             }));
         }).show();
