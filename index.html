@@ -212,7 +212,7 @@
         
         app.MainButton.setText("保存轮播资料").onClick(() => {
             let url = media.value.replace(/\?single$/, '');
-            if(!isValidTelegramUsername(username.value)){
+            if(!isValidTelegramUsername(username.value.replace(/^@/, ''))){
                 return app.showAlert("联系方式的电报用户名格式错误！");
             }
             
@@ -229,7 +229,7 @@
             }
 
             app.sendData(JSON.stringify({
-                username: username.value,
+                username: username.value.replace(/^@/, ''),
                 channel: channel.value.replace('https://t.me/', ''),
                 url: url.replace('https://t.me/', ''),
                 caption: caption.value
