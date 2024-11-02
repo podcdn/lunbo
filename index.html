@@ -229,7 +229,7 @@
             }
 
             app.sendData(JSON.stringify({
-                id: 'id' in data ? data.id : 0,
+                id: data.id,
                 username: username.value.replace(/^@/, ''),
                 channel: channel.value.replace('https://t.me/', ''),
                 url: url.replace('https://t.me/', ''),
